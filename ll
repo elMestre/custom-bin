@@ -1,2 +1,2 @@
 #!/bin/bash
-ls --color=auto -alF $@
+ls --color=auto -alFh $@

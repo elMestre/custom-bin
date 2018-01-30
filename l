@@ -1,2 +1,2 @@
 #!/bin/bash
-ls --color=auto -CF $@
+ls --color=auto -CFh $@

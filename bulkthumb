@@ -1,0 +1,13 @@
+#!/bin/bash
+USAGE=$"\n    Usage: bulkthumb {DIR}\n"
+if [ -d $#];then
+   echo -e $USAGE
+   exit 1
+fi
+
+cd $#
+for x in ./*; do
+   WIDTH=$(sips -g pixelWidth "$x"|grep pixelWidth|awk '{print $2/4}')
+   sips --resampleWidth $WIDTH "$x" --out $(echo $x|sed s/.jpg/_small.png/)
+   # sips --resampleWidth $WIDTH "$x" --out $(echo $x|sed s/.jpg/_small.jpg/)
+done

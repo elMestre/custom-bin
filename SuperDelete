@@ -1,0 +1,4 @@
+#!/bin/bash
+
+find ./ -name '*' -print0 | xargs -0 -n 10 rm
+user_pause

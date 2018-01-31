@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+[ "$(whoami)" != "root" ] && exec sudo -- "$0" "$@"
+
+sudo lsof -n -i4TCP:52698 | grep LISTEN
+user_pause

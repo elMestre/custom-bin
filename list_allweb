@@ -1,0 +1,6 @@
+#!/bin/bash
+
+[ "$(whoami)" != "root" ] && exec sudo -- "$0" "$@"
+
+sudo lsof -n | grep LISTEN
+user_pause

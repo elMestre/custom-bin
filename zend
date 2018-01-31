@@ -1,0 +1,36 @@
+#!/bin/bash
+# sudo env -i bash -c "> /usr/local/zend/var/log/php.log"
+# /usr/local/mysql/support-files/mysql.server restart &
+
+USAGE=$"\n    Usage: zend {start|restart|stop}\n"
+
+if [ $# != 1 ];then
+   echo -e $USAGE
+   exit 1
+fi
+
+
+case $1 in
+
+    start)
+        MESSAGE=$"\nStarting Zend Server\n"
+        COMMAND=$"sudo /usr/local/zend/bin/zendctl.sh start"
+    ;;
+    restart)
+        MESSAGE=$"\nRestarting Zend Server\n"
+        COMMAND=$"sudo /usr/local/zend/bin/zendctl.sh stop && sleep 4 && sudo /usr/local/zend/bin/zendctl.sh start"
+    ;;
+    stop)
+        MESSAGE=$"\nStopping Zend Server\n"
+        COMMAND=$"sudo /usr/local/zend/bin/zendctl.sh stop"
+    ;;
+
+    *)
+        echo -e $USAGE
+    ;;
+esac
+
+echo -e $MESSAGE
+eval $COMMAND
+echo
+user_pause

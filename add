@@ -1,0 +1,12 @@
+#!/bin/bash
+
+USAGE=$"\n    Usage: add [package names]\n"
+
+if [ $# != 1 ];then
+   echo -e $USAGE
+   exit 1
+fi
+
+[ "$(whoami)" != "root" ] && exec sudo -- "$0" "$@"
+
+sudo apt-get install $@

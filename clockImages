@@ -1,0 +1,86 @@
+#!/bin/bash
+
+if [ $# -eq 1 ]; then
+    if [[ -d $1 ]]; then
+        # currentDir=pwd
+        imageDir=$1
+        cd $imageDir
+    elif [[ -f $1 ]]; then
+        echo
+        read -p "    This will modify the file. Are you sure? [y/n]" -n 1 -r
+        echo
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            convert "$1" -rotate 90 "$1"
+        fi
+
+        exit 0
+    else
+        echo "    Not a valid route! "$1
+
+        exit 1
+    fi
+fi
+
+imageExtensions=(png jpg bmp tiff)
+counterImages=0
+counterUpdates=0
+overwriteFlag=0
+cancelFlag=0
+createdDirFlag=0
+
+if [[ -d clockwise ]]; then
+    :
+else
+    mkdir -p clockwise
+    createdDirFlag=1
+fi
+
+for extension in "${imageExtensions[@]}"
+do
+    for fileToRotate in *.$extension
+    do
+        if [[ -f "$fileToRotate" ]]; then
+            if [[ -f ./clockwise/"$fileToRotate" ]]; then
+                if [[ "$overwriteFlag" -lt 1 ]]; then
+                    echo
+                    read -p "    Overwrite $fileToRotate [yes/no/all/cancel]: " -n 1 -r
+                    if [[ $REPLY =~ ^[Yy]$ ]]; then
+                        :
+                    elif [[ $REPLY =~ ^[Aa]$  ]]; then
+                        overwriteFlag=$((overwriteFlag+1))
+                    elif [[ $REPLY =~ ^[Cc]$  ]]; then
+                        cancelFlag=1
+                        break;
+                    else
+                        continue;
+                    fi
+                fi
+                counterUpdates=$((counterUpdates+1))
+                rm ./clockwise/"$fileToRotate"
+            fi;
+            counterImages=$((counterImages+1))
+            convert "$fileToRotate" -rotate 90 ./clockwise/"$fileToRotate"
+        fi
+    done;
+done
+
+echo
+echo
+if [[ "$counterUpdates" -gt 0 ]]; then
+    echo "    "$counterUpdates" files updated, total files converted: "$counterImages
+
+elif [[ "$counterImages" -gt 0 ]];  then
+    echo "    "$counterImages" files converted"
+elif [[ "$cancelFlag" -gt 0 ]]; then
+    echo "    User abort, no files were modified"
+else
+    if [[ "$createdDirFlag" -gt 0 ]]; then
+        rmdir clockwise
+    fi
+    echo "    No (valid) files found"
+    echo "    valid files: *.[ ""${imageExtensions[*]}"" ]"
+    echo "    usage: clockImages [ file | folder ]"
+fi
+echo
+
+exit 0

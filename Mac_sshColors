@@ -1,0 +1,35 @@
+#!/bin/sh
+
+HOSTNAME=`echo $@ | sed s/.*@//`
+COLOR_DEFAULT="{7453, 7710, 6425, 50000}"
+COLOR_RED="{25000, 7710, 6425, 50000}"
+COLOR_GREEN="{7453, 25000, 6425, 50000}"
+COLOR_ORANGE="{60000, 36000, 4000, 50000}"
+
+set_bg ()
+{
+  osascript -e "tell application \"Terminal\" to set background color of window 1 to $1"
+}
+
+on_exit ()
+{
+  set_bg "$COLOR_DEFAULT"
+}
+trap on_exit EXIT
+
+case $HOSTNAME in
+    10.100.50.100|10.100.50.130|10.120.50.100|10.120.50.130|10.120.51.254|10.140.50.100|10.140.50.130|10.140.50.150|109.199.41.138|192.168.150.245|192.168.180.10|195.228.215.68)
+        set_bg "$COLOR_RED"
+    ;;
+    134.0.10.43)
+        set_bg "$COLOR_ORANGE"
+    ;;
+    10.211.55.6|10.120.101.235)
+        set_bg "$COLOR_DEFAULT"
+    ;;
+    *)
+        set_bg "$COLOR_GREEN"
+    ;;
+esac
+
+/usr/bin/ssh "$@"

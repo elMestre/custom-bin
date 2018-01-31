@@ -1,0 +1,11 @@
+#!/bin/bash
+function continue_func()
+{
+    local continue_timeout=5
+    echo;
+    date;
+    read -sn 1 -t $continue_timeout -p $"Press any key or wait $continue_timeout seconds to continue...";
+    echo;
+    echo;
+}
+continue_func;

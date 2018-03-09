@@ -1,0 +1,9 @@
+#!/bin/bash
+rsync -arv /media/$USER/Data/Data/android/   /media/$USER/FICOPEN/Data/android/
+rsync -arv /media/$USER/Data/Data/ESC201801/ /media/$USER/FICOPEN/Data/ESC201801/
+rsync -arv /media/$USER/Data/Data/FICOSA/    /media/$USER/FICOPEN/Data/FICOSA/
+rsync -arv /media/$USER/Data/Data/img/       /media/$USER/FICOPEN/Data/img/
+rsync -arv /media/$USER/Data/Data/JSON/      /media/$USER/FICOPEN/Data/JSON/
+rsync -arv /media/$USER/Data/Data/OVH/       /media/$USER/FICOPEN/Data/OVH/
+rsync -arv /media/$USER/Data/Data/PERSONAL/  /media/$USER/FICOPEN/Data/PERSONAL/
+rsync -v --exclude={Providers} /media/$USER/Data/Data/V2X/ /media/$USER/FICOPEN/Data/V2X/

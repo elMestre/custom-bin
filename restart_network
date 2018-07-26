@@ -1,0 +1,8 @@
+#!/bin/bash
+INTERFACES=$(ifconfig -a | sed 's/[ \t].*//;/^\(lo\|\)$/d')
+for i in $INTERFACES; do
+    echo "Restarting... "$i
+    sudo ifconfig $i down
+    sudo ifconfig $i up
+    echo "Restarted:    "$i
+done;

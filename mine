@@ -1,0 +1,23 @@
+#!/bin/bash
+if [[ $# -eq 0 ]] ; then
+    target=$PWD
+    newOwner=$USER
+elif [[ $# -eq 1 ]] ; then
+    target=$1
+    newOwner=$USER
+elif [[ $# -eq 2 ]] ; then
+    target=$1
+    newOwner=$2
+else
+    echo "Usage: mine [target] [[newOwner]]"
+fi
+
+if ! [[ -f $target || -d $target ]] ; then
+    echo "mine: failed to remove '"$target"': No such file or directory" >&2
+    exit 1
+fi
+
+[ "$(whoami)" != "root" ] && exec sudo -- "$0" $target $newOwner
+chown -R $newOwner:$newOwner $target
+echo "'"$target"' and content now belong to '"$newOwner"'"
+exit 0

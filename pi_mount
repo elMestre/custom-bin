@@ -1,0 +1,37 @@
+#!/bin/bash
+REMOTE_FOLDER="raspberry.hmi:/opt/lemp/www-raspberry/"
+MOUNT_FOLDER="/mnt/Data/V2X/raspberry.hmi"
+
+set_remote_date() {
+    ssh raspberry.hmi sudo date -s @`( date -u +"%s" )`
+    echo "raspberry.hmi date set"
+}
+
+mount_pi() {
+    if [ -d "$MOUNT_FOLDER" ] && [ -z "$(ls -A $MOUNT_FOLDER)" ]; then
+        sshfs $REMOTE_FOLDER $MOUNT_FOLDER
+        echo "Mounted"
+        # echo "remeber to set the date so realoader work properly (or fix ntp, you lazy)"
+        # echo "sudo date -s \"31 DIC 2018 08:00:00\""
+    else
+        if [ -d "$MOUNT_FOLDER" ]; then
+           echo $MOUNT_FOLDER" is not empty"
+        else
+            echo $MOUNT_FOLDER" does not exist"
+        fi
+    fi
+}
+
+umount_pi() {
+    if fusermount -u $MOUNT_FOLDER; then
+        echo "Unmounted"
+    fi
+}
+
+if [ $# -eq 0 ]; then
+    set_remote_date
+    mount_pi
+    cd $MOUNT_FOLDER
+else
+    umount_pi
+fi

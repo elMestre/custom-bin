@@ -1,0 +1,3 @@
+#!/bin/bash
+[ "$(whoami)" != "root" ] && exec sudo -- "$0" "$@"
+sudo shutdown --reboot 0 && exit

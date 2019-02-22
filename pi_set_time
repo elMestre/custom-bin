@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ssh -t raspberry.hmi 'echo "date Updated:"; sudo date -s @`( date -u +"%s" )`; bash --login'

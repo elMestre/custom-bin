@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [[ $# -eq 0 ]] ; then
+    echo "USage: mk4me [DIRECTORY NAME]"
+    exit 0
+fi
+
+folderName=$1
+
+if [ -d $folderName ]; then
+  echo "directory already exists"
+    exit 0
+fi
+
+[ "$(whoami)" != "root" ] && exec sudo -- "$0" "$@" $USER
+
+rootUser="root"
+originalUser="${@: -1}"
+
+mkdir $folderName
+if [ ! $originalUser == $rootUser ]; then
+    chown $originalUser:$originalUser $folderName
+fi

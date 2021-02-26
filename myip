@@ -3,4 +3,19 @@
 # ifconfig | grep "inet " | grep -o 'inet \d\{1,3\}\.\d\{1,3\}\.\d\{1,3\}\.\d\{1,3\}'
 # ifconfig | grep "inet " | grep -o '\d\{1,3\}\.\d\{1,3\}\.\d\{1,3\}\.\d\{1,3\}'
 # ifconfig | grep "inet " | grep -o "\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"
-ifconfig | grep "inet " | grep -v 127.0.0.1
+# ifconfig | grep "inet " | grep -v 127.0.0.1
+
+#!/usr/bin/env bash
+if command -v ip &> /dev/null
+then
+    echo "IP found"
+    ip addr show eth0 | grep inet | awk '{ print $2; }' | sed 's/\/.*$//'
+    exit
+elif command -v ifconfig  &> /dev/null
+then
+    echo "IFCONFIG found"
+    ifconfig | grep "inet " | grep -v 127.0.0.1
+fi
+
+echo "no suitable command found"
+
